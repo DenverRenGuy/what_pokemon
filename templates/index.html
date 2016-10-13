@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>What's That Pokemon (Cause We couldn't get the rights to who) | Coding Dojo</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1 style="text-align: center">Poke-dex</h1>
+
+            <div class="image-window">
+                {% for number in numbers %}
+                    <img id="{{ number }}" src="http://54.218.118.137/imgs/{{ number }}" alt="" />
+                {% endfor %}
+            </div>
+            <div id="pokemon" class="poke-window">
+
+            </div>
+
+
+        </div>
+    </body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("img").click(function(e){
+                $.get('http://pokeapi.co/api/v2/pokemon/' + e.target.id, function(res){
+                    console.log(res);
+
+                    var html_str = "";
+                    html_str += "<h2>" + res.name + "</h2>";
+                    html_str += "<img src='http://54.218.118.137/imgs/" + res.id +"' alt='' />";
+                    html_str += "<h4>Types</h4>";
+                    html_str += "<ul>";
+                    for(var i = 0; i < res.types.length; i++){
+                        html_str += "<li>" + res.types[i].type.name + "</li>";
+                    }
+                    html_str += "</ul>";
+                    html_str += "<h4>Height</h4>";
+                    html_str += "<p>" + res.height + "</p>";
+                    html_str += "<h4>Weight</h4>";
+                    html_str += "<p>" + res.weight + "</p>";
+
+                    $("#pokemon").html(html_str);
+                }, 'json');
+
+            });
+
+
+        })
+
+    </script>
+</html>
